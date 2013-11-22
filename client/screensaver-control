@@ -1,0 +1,26 @@
+#!/bin/bash
+
+. $(dirname $0)/client.rc
+
+#DAY_START=800
+#DAY_END=1800
+#FREE_WEEKENDS=1
+                        # set FREE_WEEKEND=0 if you must work the weekend
+
+NOW=$( date +%H%M )
+IS_WORKDAY=$(( $( date +%w ) % 6 ))     # 0=sun .. 6%6=sat
+export DISPLAY=:0
+
+if ( (( $DAY_START < $NOW )) && (( $NOW < $DAY_END )) && (( $IS_WORKDAY * $FREE_WEEKENDS )) ) ; then 
+        # It's work time
+        xset -dpms
+        xset s reset
+        xset s off
+else
+        # It's off-work
+        xset +dpms
+        xset s activate
+        xset s 3
+fi
+
+
