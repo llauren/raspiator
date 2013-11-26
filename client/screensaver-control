@@ -1,26 +1,36 @@
 #!/bin/bash
 
-. $(dirname $0)/client.rc
+# Screensaver scheduling for the Raspiator project. Part of
+# https://github.com/llauren/raspiator
+#
+# This will enable or disable the screen saver of the Raspiator according
+# to schedule. Requires the file client.rc to have the following entries:
+#DAY_START=800 		# <Hour><Minute> when screen should be always on
+#DAY_END=1800  		# <Hour><Minute> when screen should be mostly off
+#FREE_WEEKENDS=1	# set FREE_WEEKEND=0 if you must work the weekend
 
-#DAY_START=800
-#DAY_END=1800
-#FREE_WEEKENDS=1
-                        # set FREE_WEEKEND=0 if you must work the weekend
+. $(dirname $0)/client.rc || {
+	echo "$0 requires the file $(dirname $0)/client.rc to run. See $0"
+	exit 1
+}
 
-NOW=$( date +%k%M )
+NOW=$( date +%k%M )	# %H%M would give a leading zero between 8 and 10
 IS_WORKDAY=$(( $( date +%w ) % 6 ))     # 0=sun .. 6%6=sat
-export DISPLAY=:0
+
+DPMS_STATE=$( xset q | grep "DPMS is" )
 
 if ( (( $DAY_START < $NOW )) && (( $NOW < $DAY_END )) && (( $IS_WORKDAY * $FREE_WEEKENDS )) ) ; then 
-        # It's work time
-        xset -dpms
-        xset s reset
-        xset s off
+        # It's work time; shut off DPMS if it isn't already off
+        [[ "$DPMS_STATE" =~ "Disabled" ]] || {
+		xset -dpms
+		xset s reset
+		xset s off
+	}
 else
-        # It's off-work
-        xset +dpms
+        # It's off-work; engage DPMS and set timeouts, clobber  previous settings
+        [[ "$DPMS_STATE" =~ "Enabled" ]] || xset +dpms
         xset s activate
-        xset s 3
+        xset s 10
 fi
 
 
