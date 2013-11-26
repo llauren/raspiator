@@ -7,7 +7,7 @@
 #FREE_WEEKENDS=1
                         # set FREE_WEEKEND=0 if you must work the weekend
 
-NOW=$( date +%H%M )
+NOW=$( date +%k%M )
 IS_WORKDAY=$(( $( date +%w ) % 6 ))     # 0=sun .. 6%6=sat
 export DISPLAY=:0
 
