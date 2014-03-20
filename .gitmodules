@@ -1,0 +1,6 @@
+[submodule "server/vegas"]
+	path = server/vegas
+	url = https://github.com/jaysalvat/vegas.git
+[submodule "server/httpd"]
+	path = server/httpd
+	url = https://github.com/gummesson/teeny-tiny-static-server.git
