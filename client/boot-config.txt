@@ -1,0 +1,6 @@
+# uncomment to force a console size. By default it will be display's size minus
+# overscan.
+framebuffer_width=1920
+framebuffer_height=1200
+framebuffer_depth=16
+
