@@ -31,8 +31,6 @@ while true; do
 	matchbox-window-manager -use_titlebar no -use_cursor no &
 
 	# Start the browser (See http://peter.sh/experiments/chromium-command-line-switches/)
-	#chromium  --app=http://vegas.jaysalvat.com/
-	#chromium  --app=http://tympanus.net/Tutorials/CSS3FullscreenSlideshow/
 	#chromium --ignore-certificate-errors --app=https://mon.core.reaktor.fi/rad/index.html            
 	chromium --ignore-certificate-errors --app=$(cat /home/pi/raspiator.url)
 done;
