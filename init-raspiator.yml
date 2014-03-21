@@ -1,17 +1,17 @@
 # Initialize raspiator client
 ---
-- hosts: raspiator2  # radiators
+- hosts: raspiator3  # radiators
   tasks:
-#  - name: update apt cache
-#    command: apt-get update
-#  - name: upgrade system
-#    command: apt-get upgrade -y
-#  - name: install dependencies and ansible apt support
-#    command: apt-get install matchbox chromium x11-xserver-utils ttf-mscorefonts-installer xwit sqlite3 libnss3 python-apt -y
-#  - name: install radiator package
-#    git: 
-#      repo=https://github.com/llauren/raspiator.git 
-#      dest=/home/pi/raspiator
+  - name: update apt cache
+    command: apt-get update
+  - name: upgrade system
+    command: apt-get upgrade -y
+  - name: install dependencies and ansible apt support
+    command: apt-get install matchbox chromium x11-xserver-utils ttf-mscorefonts-installer xwit sqlite3 libnss3 python-apt -y
+  - name: install radiator package
+    git: 
+      repo=https://github.com/llauren/raspiator.git 
+      dest=/home/pi/raspiator
   - name: screen saver execute bit
     file: name="/home/pi/raspiator/client/screensaver-control" mode=0744
   - name: schedule screen saver
