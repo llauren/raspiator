@@ -1,0 +1,33 @@
+# Initialize raspiator client
+---
+- hosts: raspiator2  # radiators
+  tasks:
+#  - name: update apt cache
+#    command: apt-get update
+#  - name: upgrade system
+#    command: apt-get upgrade -y
+#  - name: install dependencies and ansible apt support
+#    command: apt-get install matchbox chromium x11-xserver-utils ttf-mscorefonts-installer xwit sqlite3 libnss3 python-apt -y
+#  - name: install radiator package
+#    git: 
+#      repo=https://github.com/llauren/raspiator.git 
+#      dest=/home/pi/raspiator
+  - name: screen saver execute bit
+    file: name="/home/pi/raspiator/client/screensaver-control" mode=0744
+  - name: schedule screen saver
+    cron: name="Manage screen saver" minute="*/2" user="pi" job="/home/pi/raspiator/client/screensaver-control"
+  - name: change ownership of xinitrc
+    sudo: yes
+    file: path=/home/pi/raspiator/client/xinitrc owner=root group=root
+  - name: move xinitrc
+    sudo: yes
+    command: mv /home/pi/raspiator/client/xinitrc /boot/xinitrc
+  - name: create user link to xinitrc
+    file: src=/boot/xinitrc dest=/home/pi/.xinitrc state=link
+  - name: move rc.local to etc
+    sudo: yes
+    command: mv /home/pi/raspiator/client/rc.local /etc
+  - name: move rc.local to etc
+    sudo: yes
+    command: mv /home/pi/raspiator/client/rc.local /etc
+ 
