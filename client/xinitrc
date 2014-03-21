@@ -32,6 +32,6 @@ while true; do
 
 	# Start the browser (See http://peter.sh/experiments/chromium-command-line-switches/)
 	#chromium --ignore-certificate-errors --app=https://mon.core.reaktor.fi/rad/index.html            
-	chromium --ignore-certificate-errors --app=$(cat /home/pi/raspiator.url)
+	chromium --ignore-certificate-errors --app=$(cat /home/pi/raspiator/client/raspiator.url)
 done;
 
