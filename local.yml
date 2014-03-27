@@ -1,0 +1,20 @@
+# vim:ff=unix ts=2 sw=2 ai expandtab
+# Change the radiator screen according to the
+# host specific configuration in vars/$hostname.yml
+---
+- hosts: radiators
+
+  vars_files:
+  - [ "vars/{{ansible_hostname}}.yml", "vars/client.yml" ]
+
+  tasks:
+  - name: Set radiator URL
+    copy: content="{{url}}" dest=/home/pi/raspiator/client/raspiator.url
+  - notify: 
+    name: Restart Chromium
+
+  handlers:
+  - name: Restart Chromium
+    command: pkill chromium
+
+

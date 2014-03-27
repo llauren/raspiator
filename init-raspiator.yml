@@ -1,36 +1,44 @@
 # Initialize raspiator client
+# vim:ff=unix ts=2 sw=2 ai expandtab
 ---
 - hosts: raspiator3  # radiators
+  sudo: yes
   tasks:
   - name: update apt cache
     command: apt-get update
-    sudo: yes
   - name: upgrade system
     command: apt-get upgrade -y
-    sudo: yes
+  - name: install python-apt
+    command: apt-get install python-apt -y
   - name: install dependencies and ansible apt support
-    command: apt-get install matchbox chromium x11-xserver-utils ttf-mscorefonts-installer xwit sqlite3 libnss3 python-apt -y
-    sudo: yes
+    apt: name={{ item }} state=present
+    with_items:
+    - matchbox
+    - chromium
+    - x11-xserver-utils
+    - ttf-mscorefonts-installer
+    - xwit
+    - sqlite3
+    - libnss3
   - name: install radiator package
+    sudo: no
     git: 
       repo=https://github.com/llauren/raspiator.git 
       dest=/home/pi/raspiator
   - name: screen saver execute bit
+    sudo: no
     file: name="/home/pi/raspiator/client/screensaver-control" mode=0744
   - name: schedule screen saver
+    sudo: no
     cron: name="Manage screen saver" minute="*/2" user="pi" job="/home/pi/raspiator/client/screensaver-control"
   - name: change ownership of xinitrc
-    sudo: yes
     file: path=/home/pi/raspiator/client/xinitrc owner=root group=root
   - name: move xinitrc
-    sudo: yes
     command: mv /home/pi/raspiator/client/xinitrc /boot/xinitrc
   - name: create user link to xinitrc
-    file: src=/boot/xinitrc dest=/home/pi/.xinitrc state=link
+    file: src=/boot/xinitrc dest=/home/pi/.xinitrc state=link owner=pi 
   - name: move rc.local to etc
-    sudo: yes
-    command: mv /home/pi/raspiator/client/rc.local /etc
-  - name: move rc.local to etc
-    sudo: yes
-    command: mv /home/pi/raspiator/client/rc.local /etc
+    command: mv /home/pi/raspiator/client/rc-local /etc/rc.local
+  - name: reboot
+    command: reboot
  
