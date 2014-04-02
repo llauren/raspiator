@@ -1,7 +1,7 @@
 # Initialize raspiator client
 # vim:ff=unix ts=2 sw=2 ai expandtab
 ---
-- hosts: raspiator3  # radiators
+- hosts: radiators
   sudo: yes
   tasks:
   - name: update apt cache

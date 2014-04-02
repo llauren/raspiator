@@ -4,14 +4,14 @@
 ---
 - hosts: radiators
 
-  vars_files:
-  - [ "vars/{{ansible_hostname}}.yml", "vars/client.yml" ]
+# Variables should be included by magic
+#  vars_files:
+#  - [ "vars/{{ansible_hostname}}.yml", "vars/client.yml" ]
 
   tasks:
   - name: Set radiator URL
     copy: content="{{url}}" dest=/home/pi/raspiator/client/raspiator.url
-  - notify: 
-    name: Restart Chromium
+    notify: Restart Chromium
 
   handlers:
   - name: Restart Chromium
