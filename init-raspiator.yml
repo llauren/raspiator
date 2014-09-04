@@ -1,8 +1,9 @@
 # Initialize raspiator client
 # vim:ff=unix ts=2 sw=2 ai expandtab
 ---
-- hosts: radiators
+- hosts: init-radiators
   sudo: yes
+
   tasks:
   - name: update apt cache
     command: apt-get update
@@ -20,6 +21,7 @@
     - xwit
     - sqlite3
     - libnss3
+    - xdotool
   - name: install radiator package
     sudo: no
     git: 
@@ -28,9 +30,6 @@
   - name: screen saver execute bit
     sudo: no
     file: name="/home/pi/raspiator/client/screensaver-control" mode=0744
-  - name: schedule screen saver
-    sudo: no
-    cron: name="Manage screen saver" minute="*/2" user="pi" job="/home/pi/raspiator/client/screensaver-control"
   - name: change ownership of xinitrc
     file: path=/home/pi/raspiator/client/xinitrc owner=root group=root
   - name: move xinitrc
@@ -39,6 +38,9 @@
     file: src=/boot/xinitrc dest=/home/pi/.xinitrc state=link owner=pi 
   - name: move rc.local to etc
     command: mv /home/pi/raspiator/client/rc-local /etc/rc.local
-  - name: reboot
+    notify: reboot radiator
+
+  handlers:
+  - name: reboot radiator
     command: reboot
  
