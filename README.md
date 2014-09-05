@@ -18,4 +18,24 @@ screensaver on and off on a schedule, but eventually i hope to add even fancy
 
 So all in all, nothing here to be excited about. Yet. 
 
+## Getting started
 
+Install **Ansible** on your workstation (using Homebrew or pip, or whatever means
+you fancy). Burn a norman Raspbian installation on an SD card. Jump through the normal 
+first-boot hoops. Give maximum space for the graphics. Give the Raspi a hostname. 
+Depending on your network, you may need to add the hostname to your DHCP leases.
+
+When all that's done and the Rasppi is rebooted, on your machine, run the script 
+`init-raspiator.sh _hostname_` where _hostname_ is what you named your host in the 
+section above. This'll create an ssh key pair and distribute the public part to the
+Raspi. 
+
+Now edit your Ansible hosts file and add the new host to both the section [init-radiators] 
+and [radiators]. Create a file host_vars/_hostname_ (with _hostname_ again as above)
+with three dashes on the first line and the line `url: http://some.host/some.html` to
+point what you want on your Radiator screen.
+
+Run `ansible-playbook init-raspiator.yml` and watch the magic happen.
+
+To change the screen afterwards, edit the host_vars/_hostname_ file, then run 
+`ansible-playbook local.yml` (the file name will change eventually).
