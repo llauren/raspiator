@@ -20,8 +20,8 @@ So all in all, nothing here to be excited about. Yet.
 
 ## Getting started
 
-Install **Ansible** on your workstation (using Homebrew or pip, or whatever means
-you fancy). Burn a norman Raspbian installation on an SD card. Jump through the normal 
+Install **Ansible** on your workstation (using Homebrew or pip if you're on a Mac). 
+Burn a normal Raspbian installation on an SD card. Jump through the normal 
 first-boot hoops. Give maximum space for the graphics. Give the Raspi a hostname. 
 Depending on your network, you may need to add the hostname to your DHCP leases.
 
