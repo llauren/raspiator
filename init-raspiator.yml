@@ -7,10 +7,16 @@
   tasks:
   - name: update apt cache
     command: apt-get update
-  - name: upgrade system
-    command: apt-get upgrade -y
   - name: install python-apt
     command: apt-get install python-apt -y
+  - name: remove unnecessary packages
+    apt: name={{ item }} state=absent
+    with_items:
+    - scratch
+    - smartsim
+    - wolfram-engine
+  - name: upgrade system
+    command: apt-get upgrade -y
   - name: install dependencies and ansible apt support
     apt: name={{ item }} state=present
     with_items:
