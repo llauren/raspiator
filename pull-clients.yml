@@ -1,0 +1,23 @@
+# Initiate pull mode. Code adapted from https://github.com/ansible/ansible-examples/blob/master/language_features/ansible_pull.yml
+---
+- hosts: pull-clients
+  user: pi
+  sudo: yes
+
+  vars:
+    schedule: '*/10 8-18 * * *'
+    cron_user: pi
+    logfile: /var/log/ansible-pull.log
+    workdir: /var/lib/ansible/local
+    repo_url: https://github.com/llauren/raspiator.git
+
+  tasks:
+  - name: install ansible
+    action: apt pkg=ansible state=installed
+
+  - name: create local work dir
+    action: file path={{workdir}} state=directory owner=root group=root mode=0751
+
+  - name: template a cron file
+    action: template src=templates/etc_cron.d_ansible-pull.j2 dest=/etc/cron.d/ansible-pull owner=root group=root mode=0644
+
