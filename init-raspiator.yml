@@ -5,18 +5,23 @@
   sudo: yes
 
   tasks:
+
   - name: update apt cache
     command: apt-get update
+
   - name: install python-apt
     command: apt-get install python-apt -y
+
   - name: remove unnecessary packages
     apt: name={{ item }} state=absent
     with_items:
     - scratch
     - smartsim
     - wolfram-engine
+
   - name: upgrade system
     command: apt-get upgrade -y
+
   - name: install dependencies and ansible apt support
     apt: name={{ item }} state=present
     with_items:
@@ -28,20 +33,37 @@
     - sqlite3
     - libnss3
     - xdotool
+    - watchdog
+
+  # I wonder if this works...
+  - name: install watchdog
+    actions:
+    - linefile: dest=/etc/modules line=bcm2708_wdog state=present
+    - modprobe: name=bcm2708_wdog state=present
+    - shell: update-rc.d watchdog defaults
+    - lineinfile: dest=/etc/watchdog.conf create=yes line=max-load-1 state=present
+    - lineinfile: dest=/etc/watchdog.conf create=yes line=watchdog-device state=present
+    - service: name=watchdog state=started enabled=yes
+
   - name: install radiator package
     sudo: no
     git: 
       repo=https://github.com/llauren/raspiator.git 
       dest=/home/pi/raspiator
+
   - name: screen saver execute bit
     sudo: no
     file: name="/home/pi/raspiator/client/screensaver-control" mode=0744
+
   - name: change ownership of xinitrc
     file: path=/home/pi/raspiator/client/xinitrc owner=root group=root
+
   - name: move xinitrc
     command: mv /home/pi/raspiator/client/xinitrc /boot/xinitrc
+
   - name: create user link to xinitrc
     file: src=/boot/xinitrc dest=/home/pi/.xinitrc state=link owner=pi 
+
   - name: move rc.local to etc
     command: mv /home/pi/raspiator/client/rc-local /etc/rc.local
     notify: reboot radiator
