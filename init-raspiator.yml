@@ -1,5 +1,6 @@
 # Initialize raspiator client
 # vim:ff=unix ts=2 sw=2 ai expandtab
+# TODO: Change SSH login only to use keys
 ---
 - hosts: init-radiators
   sudo: yes
